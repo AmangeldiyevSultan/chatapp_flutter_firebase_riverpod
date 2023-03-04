@@ -12,7 +12,12 @@ class MobileChatScreen extends ConsumerWidget {
   static const String routeName = '/mobile-chat-screen';
   final String name;
   final String uid;
-  const MobileChatScreen({Key? key, required this.name, required this.uid})
+  final bool isGroupChat;
+  const MobileChatScreen(
+      {Key? key,
+      required this.name,
+      required this.uid,
+      required this.isGroupChat})
       : super(key: key);
 
   @override
@@ -20,26 +25,30 @@ class MobileChatScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: appBarColor,
-        title: StreamBuilder<UserModel>(
-            stream: ref.read(authControllerProvider).userDataById(uid),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Loader();
-              }
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    name,
-                  ),
-                  Text(
-                    snapshot.data!.isOnline ? 'online' : 'offline',
-                    style: const TextStyle(
-                        fontSize: 13, fontWeight: FontWeight.normal),
-                  ),
-                ],
-              );
-            }),
+        title: isGroupChat
+            ? Text(
+                name,
+              )
+            : StreamBuilder<UserModel>(
+                stream: ref.read(authControllerProvider).userDataById(uid),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Loader();
+                  }
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        name,
+                      ),
+                      Text(
+                        snapshot.data!.isOnline ? 'online' : 'offline',
+                        style: const TextStyle(
+                            fontSize: 13, fontWeight: FontWeight.normal),
+                      ),
+                    ],
+                  );
+                }),
         centerTitle: false,
         actions: [
           IconButton(
@@ -61,10 +70,12 @@ class MobileChatScreen extends ConsumerWidget {
           Expanded(
             child: ChatList(
               recieverUserId: uid,
+              isGroupChat: isGroupChat,
             ),
           ),
           BottomChatField(
             recieverUserId: uid,
+            isGroupChat: isGroupChat,
           ),
         ],
       ),

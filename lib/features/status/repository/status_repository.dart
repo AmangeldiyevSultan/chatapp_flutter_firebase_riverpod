@@ -68,11 +68,11 @@ class StatusRepository {
         }
       }
       bool isMyNumberHere = false;
-      uidWhoCanSee.forEach((element) {
+      for (var element in uidWhoCanSee) {
         if (element == firebaseAuth.currentUser!.phoneNumber) {
           isMyNumberHere = true;
         }
-      });
+      }
       if (isMyNumberHere == false) {
         uidWhoCanSee.add(firebaseAuth.currentUser!.uid);
       }

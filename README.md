@@ -1,9 +1,8 @@
 
 # Whatsapp 
 
-## Demo.
-
-https://hungry-lichterman-63f0f3.netlify.app/#/
+## Soft
+using firebase + riverpod state managmant
 
 ## Installation
 After cloning this repository, migrate to ```whatsapp_flutter_firebase_riverpod``` folder. There, run the following commands:
